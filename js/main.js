@@ -1,24 +1,17 @@
 import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
-import { OrbitControls } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
 
 document.addEventListener('DOMContentLoaded', function () {
   const spinner = document.getElementById('spinner');
-  const content = document.getElementById('content');
 
-  // Имитация загрузки (в реальном проекте удалите setTimeout)
   setTimeout(function () {
-    // Скрываем спиннер
     spinner.style.opacity = '0';
 
-    // Показываем контент
-    content.classList.add('show');
-
-    // Удаляем спиннер из DOM после анимации
+ 
     setTimeout(function () {
       spinner.style.display = 'none';
-    }, 500); // Должно совпадать с длительностью transition
-  }, 2000); // В реальном проекте замените на обработчик полной загрузки страницы
+    }, 500); 
+  }, 2000); 
 });
 
 
@@ -31,7 +24,6 @@ window.addEventListener('load', function () {
 
   let object;
 
-  let controls;
 
   let objToRender = 'eye';
 
@@ -56,19 +48,15 @@ window.addEventListener('load', function () {
 
   document.getElementById("container3D").appendChild(renderer.domElement);
 
-  camera.position.z = objToRender === "dino" ? 25 : 500;
+  camera.position.z = 500;
 
   const topLight = new THREE.DirectionalLight(0xffffff, 1);
   topLight.position.set(500, 500, 500)
   topLight.castShadow = true;
   scene.add(topLight);
 
-  const ambientLight = new THREE.AmbientLight(0x333333, objToRender === "dino" ? 5 : 1);
+  const ambientLight = new THREE.AmbientLight(0x333333, 1);
   scene.add(ambientLight);
-
-  if (objToRender === "dino") {
-    controls = new OrbitControls(camera, renderer.domElement);
-  }
 
   function animate() {
     requestAnimationFrame(animate);
@@ -91,6 +79,7 @@ window.addEventListener('load', function () {
     mouseY = e.clientY;
   }
   window.addEventListener('wheel', (event) => {
+    console.log(camera.position.z)
     event.preventDefault();
     if (event.deltaY < 0 && camera.position.z <= 1000) {
       camera.position.z += 10
@@ -102,7 +91,7 @@ window.addEventListener('load', function () {
   let isMouseDown = false;
   let previousMousePosition = { x: 0, y: 0 };
   window.addEventListener('mousedown', (event) => {
-    if (event.button === 0) { // Левая кнопка мыши
+    if (event.button === 0) { 
       isMouseDown = true;
       previousMousePosition = {
         x: event.clientX,
