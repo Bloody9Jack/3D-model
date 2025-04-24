@@ -30,7 +30,7 @@ loader.load(
   }
 );
 
-const renderer = new THREE.WebGLRenderer({ alpha: true }); 
+const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 document.getElementById("container3D").appendChild(renderer.domElement);
@@ -75,8 +75,40 @@ window.addEventListener('wheel', (event) => {
     camera.position.z += 10
   } else if (event.deltaY > 0 && camera.position.z >= 180) {
     camera.position.z -= 10;
- 
+
+  }
+});
+let isMouseDown = false;
+let previousMousePosition = { x: 0, y: 0 };
+window.addEventListener('mousedown', (event) => {
+  if (event.button === 0) { // Левая кнопка мыши
+    isMouseDown = true;
+    previousMousePosition = {
+      x: event.clientX,
+      y: event.clientY
+    };
   }
 });
 
+
+window.addEventListener('mousemove', (event) => {
+  if (isMouseDown) {
+    const deltaMove = {
+      x: event.clientX - previousMousePosition.x,
+      y: event.clientY - previousMousePosition.y
+    };
+
+    // Вращение куба
+    scene.rotation.y += deltaMove.x * 0.01;
+    scene.rotation.x += deltaMove.y * 0.01;
+
+    previousMousePosition = {
+      x: event.clientX,
+      y: event.clientY
+    };
+  }
+});
+window.addEventListener('mouseup', () => {
+  isMouseDown = false;
+});
 animate();
